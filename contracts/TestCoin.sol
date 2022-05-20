@@ -10,8 +10,9 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20FlashMint.sol";
 
 contract TestCoin is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Permit, ERC20Votes, ERC20FlashMint {
+    uint256 public immutable maxSupply = 100000000000 * 10**18;
     constructor() ERC20("TestCoin", "TC") ERC20Permit("TestCoin") {
-        _mint(msg.sender, 1000000 * 10 ** decimals());
+        _mint(msg.sender, 10000000 * 10 ** decimals());
     }
 
     function snapshot() public onlyOwner {
@@ -19,6 +20,7 @@ contract TestCoin is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Permit, 
     }
 
     function mint(address to, uint256 amount) public onlyOwner {
+        require(amount + ERC20.totalSupply() <= maxSupply, "Max Supply Exceeded");
         _mint(to, amount);
     }
 

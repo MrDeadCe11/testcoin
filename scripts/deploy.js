@@ -15,7 +15,7 @@ async function main() {
 
   // We get the contract to deploy
   const TestCoin = await hre.ethers.getContractFactory("TestCoin.sol");
-  const testcoin = await TestCoin.deploy("Hello, Hardhat!");
+  const testcoin = await TestCoin.deploy();
 
   await testcoin.deployed();
 
