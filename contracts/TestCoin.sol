@@ -53,4 +53,8 @@ contract TestCoin is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Permit, 
     {
         super._burn(account, amount);
     }
+
+    function getMaxSupply() public pure returns(uint256){
+        return maxSupply;
+    }
 }
