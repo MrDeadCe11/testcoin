@@ -19,7 +19,7 @@ describe("TestCoin", function () {
     const beforeMintBal = await testcoin.balanceOf(addr1.address);
     const mint = await testcoin
       .connect(owner)
-      .mint(addr1.address, ethers.utils.parseEther("1"));
+      .mint(addr1.address, ethers.utils.parseEther("100"));
     await mint.wait();
     const afterMintBal = await testcoin.balanceOf(addr1.address);
 
@@ -32,4 +32,14 @@ describe("TestCoin", function () {
     const maxSupply = await testcoin.getMaxSupply();
     expect(maxSupply.toString()).to.equal("100000000000000000000000000000");
   });
+
+  it("should transfer some testcoin from addr1 to addr 2", async function () {
+    const trasnferAmount = ethers.utils.parseEther("10");
+    const tx = await testcoin
+      .connect(addr1)
+      .transfer(addr2.address, trasnferAmount);
+    const promise = await tx.wait();
+    expect(promise.events[0].args.value).to.equal("10000000000000000000");
+  });
+  
 });
