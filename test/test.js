@@ -3,6 +3,7 @@ const { ethers } = require("hardhat");
 
 describe("TestCoin", function () {
   let testcoin, owner, addr1, addr2;
+
   it("Should deploy testcoin", async function () {
     const accounts = await ethers.getSigners();
     owner = accounts[0];
@@ -33,7 +34,7 @@ describe("TestCoin", function () {
     expect(maxSupply.toString()).to.equal("100000000000000000000000000000");
   });
 
-  it("should transfer some testcoin from addr1 to addr 2", async function () {
+  it("should transfer 10 testcoin from addr1 to addr 2", async function () {
     const trasnferAmount = ethers.utils.parseEther("10");
     const tx = await testcoin
       .connect(addr1)
@@ -41,5 +42,4 @@ describe("TestCoin", function () {
     const promise = await tx.wait();
     expect(promise.events[0].args.value).to.equal("10000000000000000000");
   });
-  
 });
