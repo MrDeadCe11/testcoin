@@ -42,4 +42,16 @@ describe("TestCoin", function () {
     const promise = await tx.wait();
     expect(promise.events[0].args.value).to.equal("10000000000000000000");
   });
+
+  it("should take a snapshot", async function () {
+    await expect(testcoin.connect(owner).snapshot()).to.emit(
+      testcoin,
+      "Snapshot"
+    );
+  });
+
+  it("should get the supply of the snapshot", async function () {
+    const tx = await testcoin.totalSupplyAt(1);
+    expect(ethers.utils.formatEther(tx.toString())).to.equal("10000100.0");
+  });
 });
