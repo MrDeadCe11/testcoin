@@ -54,4 +54,21 @@ describe("TestCoin", function () {
     const tx = await testcoin.totalSupplyAt(1);
     expect(ethers.utils.formatEther(tx.toString())).to.equal("10000100.0");
   });
+
+  it("should approve a spender for 10 eth and  the spender should spend", async function () {
+    await testcoin
+      .connect(owner)
+      .approve(addr1.address, ethers.utils.parseEther("10"));
+
+    const transfer = await testcoin
+      .connect(addr1)
+      .transferFrom(
+        owner.address,
+        addr1.address,
+        ethers.utils.parseEther("10")
+      );
+
+    const promise = await transfer.wait();
+    expect(promise.events[1].args.value).to.equal("10000000000000000000");
+  });
 });
