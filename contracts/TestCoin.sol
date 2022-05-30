@@ -57,4 +57,11 @@ contract TestCoin is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Permit, 
     function getMaxSupply() public pure returns(uint256){
         return maxSupply;
     }
+    //flash fee override
+        function flashFee(address token, uint256 amount) public view virtual override returns (uint256) {
+        require(token == address(this), "ERC20FlashMint: wrong token");
+        // silence warning about unused variable without the addition of bytecode.
+        amount;
+        return 1;
+    }
 }

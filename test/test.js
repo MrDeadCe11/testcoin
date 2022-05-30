@@ -71,4 +71,11 @@ describe("TestCoin", function () {
     const promise = await transfer.wait();
     expect(promise.events[1].args.value).to.equal("10000000000000000000");
   });
+
+  it("should delegate owner votes to owner", async function () {
+    const delegate = await testcoin.delegate(owner.address);
+    await delegate.wait();
+    const votes = await testcoin.getVotes(owner.address);
+    expect(votes.toString()).to.equal("9999990000000000000000000");
+  });
 });
