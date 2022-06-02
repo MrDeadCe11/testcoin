@@ -78,4 +78,8 @@ describe("TestCoin", function () {
     const votes = await testcoin.getVotes(owner.address);
     expect(votes.toString()).to.equal("9999990000000000000000000");
   });
+
+    it("should take a snapshot of owner votes", async function () {
+      const tx =  await testcoin.
+    });
 });
