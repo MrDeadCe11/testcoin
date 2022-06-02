@@ -95,4 +95,10 @@ describe("TestCoin", function () {
     const tx = await testcoin.getPastVotes(owner.address, blockNum);
     expect(ethers.utils.formatEther(tx)).to.equal("9999990.0");
   });
+
+  it("should transfer ownership to addr1", async function () {
+    const tx = await testcoin.transferOwnership(addr1.address);
+    const promise = await tx.wait();
+    expect(promise.events[0].args.newOwner).to.equal(addr1.address);
+  });
 });
