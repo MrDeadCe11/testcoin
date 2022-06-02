@@ -101,4 +101,14 @@ describe("TestCoin", function () {
     const promise = await tx.wait();
     expect(promise.events[0].args.newOwner).to.equal(addr1.address);
   });
+
+  it("should burn 1000 tokens from owner account", async function () {
+    const beforeBurn = await testcoin.balanceOf(owner.address);
+    const tx = await testcoin
+      .connect(owner)
+      .burn(ethers.utils.parseEther("1000"));
+    await tx.wait();
+    const afterBurn = await testcoin.balanceOf(owner.address);
+    expect(beforeBurn.sub(afterBurn)).to.equal(ethers.utils.parseEther("1000"));
+  });
 });
