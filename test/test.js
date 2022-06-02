@@ -2,7 +2,7 @@ const { expect } = require("chai");
 const { ethers } = require("hardhat");
 
 describe("TestCoin", function () {
-  let testcoin, owner, addr1, addr2;
+  let testcoin, owner, addr1, addr2, blockNum;
 
   it("Should deploy testcoin", async function () {
     const accounts = await ethers.getSigners();
@@ -35,10 +35,10 @@ describe("TestCoin", function () {
   });
 
   it("should transfer 10 testcoin from addr1 to addr 2", async function () {
-    const trasnferAmount = ethers.utils.parseEther("10");
+    const transferAmount = ethers.utils.parseEther("10");
     const tx = await testcoin
       .connect(addr1)
-      .transfer(addr2.address, trasnferAmount);
+      .transfer(addr2.address, transferAmount);
     const promise = await tx.wait();
     expect(promise.events[0].args.value).to.equal("10000000000000000000");
   });
@@ -74,12 +74,25 @@ describe("TestCoin", function () {
 
   it("should delegate owner votes to owner", async function () {
     const delegate = await testcoin.delegate(owner.address);
-    await delegate.wait();
+    const promise = await delegate.wait();
     const votes = await testcoin.getVotes(owner.address);
+    blockNum = await promise.blockNumber;
     expect(votes.toString()).to.equal("9999990000000000000000000");
   });
 
-    it("should take a snapshot of owner votes", async function () {
-      const tx =  await testcoin.
-    });
+  it("mint 1000 testcoin to addr2", async function () {
+    const beforeMint = await testcoin.balanceOf(addr2.address);
+    const mint = await testcoin.mint(
+      addr2.address,
+      ethers.utils.parseEther("1000")
+    );
+    await mint.wait();
+    const afterMint = await testcoin.balanceOf(addr2.address);
+    expect(afterMint.sub(beforeMint)).to.equal(ethers.utils.parseEther("1000"));
+  });
+
+  it("should retreive voting power snapshot for owner at previous block", async function () {
+    const tx = await testcoin.getPastVotes(owner.address, blockNum);
+    expect(ethers.utils.formatEther(tx)).to.equal("9999990.0");
+  });
 });

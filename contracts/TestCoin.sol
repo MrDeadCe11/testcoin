@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
 
 contract TestCoin is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Votes {
-    uint256 public immutable maxSupply = 100000000000 * 10**18;
+    uint256 private immutable maxSupply = 100000000000 * 10**18;
     constructor() ERC20("TestCoin", "TC") ERC20Permit("TestCoin") {
         _mint(msg.sender, 10000000 * 10 ** decimals());
     }
