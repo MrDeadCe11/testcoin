@@ -1,3 +1,6 @@
+# TEST COIN
+this is an erc20 token intended to be used as a governance token for any protocol.  testing using various open zeppelin libraries to create and test a token.
+
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.

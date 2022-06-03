@@ -6,11 +6,12 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Snapshot.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
+import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 
 
-contract TestCoin is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Votes {
+contract TestCoin is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Permit, ERC20Votes {
     uint256 private immutable maxSupply = 100000000000 * 10**18;
-    constructor() ERC20("TestCoin", "TC") ERC20Permit("TestCoin") {
+    constructor() ERC20("TestCoin", "TC") ERC20Permit("TestCoin"){
         _mint(msg.sender, 10000000 * 10 ** decimals());
     }
 
@@ -20,7 +21,7 @@ contract TestCoin is ERC20, ERC20Burnable, ERC20Snapshot, Ownable, ERC20Votes {
 
     function mint(address to, uint256 amount) public onlyOwner {
         require(amount + ERC20.totalSupply() <= maxSupply, "Max Supply Exceeded");
-        _mint(to, amount);
+        super._mint(to, amount);
     }
 
     // The following functions are overrides required by Solidity.
